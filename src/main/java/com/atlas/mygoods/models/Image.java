@@ -1,34 +1,47 @@
-package com.atlas.mygoods.model;
+package com.atlas.mygoods.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "image")
-public class Image {
+@Table
+public class Image implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue
+    private Long imageId;
     private String imageURL;
     private String imageName;
-    public Image(){
+
+    public Image() {
 
     }
+
     public Image(String imageURL) {
         this.imageURL = imageURL;
         this.imageName = "ImageName";
     }
+
     public Image(String imageURL, String imageName) {
         this.imageURL = imageURL;
         this.imageName = imageName;
     }
 
-    public String getId() {
-        return id;
+    public Image(Long imageId, String imageURL, String imageName) {
+        this.imageId = imageId;
+        this.imageURL = imageURL;
+        this.imageName = imageName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 
     public String getImageURL() {
@@ -50,7 +63,7 @@ public class Image {
     @Override
     public String toString() {
         return "Image{" +
-                "id='" + id + '\'' +
+                "imageId='" + imageId + '\'' +
                 ", imageURL='" + imageURL + '\'' +
                 ", imageName='" + imageName + '\'' +
                 '}';

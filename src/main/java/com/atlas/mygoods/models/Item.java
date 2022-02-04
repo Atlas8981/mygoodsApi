@@ -1,21 +1,18 @@
-package com.atlas.mygoods.model;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+package com.atlas.mygoods.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "item")
-public class Item implements Comparable<Item> {
-
+@Table
+public class Item implements Serializable, Comparable<Item> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue
+    private Long itemid;
     private String name;
     private String address;
     private String subCategory;
@@ -23,15 +20,12 @@ public class Item implements Comparable<Item> {
     private String description;
     private String userid;
     private String phone;
-
-    @Autowired
-    @ElementCollection(targetClass = Image.class)
+    @OneToMany(targetEntity = Image.class)
     private List<Image> images;
     private int amount;
     private double price;
-    //    @Column
-    @ElementCollection(targetClass = Integer.class)
-    @Autowired
+//    @OneToMany(targetEntity = List.class,mappedBy = "item")
+    @ElementCollection
     private List<String> viewers;
     private int views;
     private Date date;
@@ -39,67 +33,41 @@ public class Item implements Comparable<Item> {
     public Item() {
     }
 
-    public Item(String name, String address, String subCategory, String mainCategory, String description, String userid, String phone, int amount, double price, int views, Date date) {
-        this.name = name;
-        this.address = address;
-        this.subCategory = subCategory;
-        this.mainCategory = mainCategory;
-        this.description = description;
-        this.userid = userid;
-        this.phone = phone;
-        this.amount = amount;
-        this.price = price;
-        this.views = views;
-        this.date = date;
-    }
+//    Without Item Id,View = 0
+//    Basically for Add Fragement
 
-    public Item(String id, String name, String address, String subCategory, String mainCategory, String description, String userid, String phone, int amount, double price, int views, Date date) {
-        this.id = id;
+    public Item(String name, String address, List<Image> images, String subCategory, String mainCategory, String description, String userid, String phone, double price, Date date) {
         this.name = name;
         this.address = address;
-        this.subCategory = subCategory;
-        this.mainCategory = mainCategory;
-        this.description = description;
-        this.userid = userid;
-        this.phone = phone;
-        this.amount = amount;
-        this.price = price;
-        this.views = views;
-        this.date = date;
-    }
-
-    public Item(String id, String name, String address, String subCategory, String mainCategory, String description, String userid, String phone, List<Image> images, int amount, double price, List<String> viewers, int views, Date date) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.subCategory = subCategory;
-        this.mainCategory = mainCategory;
-        this.description = description;
-        this.userid = userid;
-        this.phone = phone;
         this.images = images;
-        this.amount = amount;
-        this.price = price;
-        this.viewers = viewers;
-        this.views = views;
-        this.date = date;
-    }
-
-    public Item(String name, String address, String subCategory, String mainCategory, String description, String userid, String phone, List<Image> images, int amount, double price, List<String> viewers, int views, Date date) {
-        this.name = name;
-        this.address = address;
         this.subCategory = subCategory;
         this.mainCategory = mainCategory;
         this.description = description;
         this.userid = userid;
-        this.phone = phone;
-        this.images = images;
-        this.amount = amount;
         this.price = price;
-        this.viewers = viewers;
-        this.views = views;
+        this.phone = phone;
         this.date = date;
+        this.views = 0;
+        this.viewers = new ArrayList<>();
     }
+
+//    public Item copyItemEntity(ItemEntity itemEntity){
+
+//        itemEntity.getItemid(),
+//                itemEntity.getName(),
+//                itemEntity.getAddress(),
+//                itemEntity.getSubCategory(),
+//                itemEntity.getMainCategory(),
+//                itemEntity.getDescription(),
+//                itemEntity.getDescription(),
+//                itemEntity.getUserid(),
+//                itemEntity.getPhone(),
+//                itemEntity.getAmount(),
+//                itemEntity.getPrice(),
+//                itemEntity.getViews(),
+//                itemEntity.getDate()
+//        return tempItem;
+//    }
 
     public String getSubCategory() {
         return subCategory;
@@ -117,13 +85,20 @@ public class Item implements Comparable<Item> {
         this.mainCategory = mainCategory;
     }
 
-
-    public String getId() {
-        return id;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public Long getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(Long itemid) {
+        this.itemid = itemid;
     }
 
     public String getPhone() {
@@ -190,6 +165,14 @@ public class Item implements Comparable<Item> {
         this.views = views;
     }
 
+    public List<String> getViewers() {
+        return viewers;
+    }
+
+    public void setViewers(List<String> viewers) {
+        this.viewers = viewers;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -202,7 +185,7 @@ public class Item implements Comparable<Item> {
     @Override
     public String toString() {
         return "Item{" +
-                "itemid='" + id + '\'' +
+                "itemid='" + itemid + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", subCategory='" + subCategory + '\'' +
@@ -210,6 +193,7 @@ public class Item implements Comparable<Item> {
                 ", description='" + description + '\'' +
                 ", userid='" + userid + '\'' +
                 ", phone='" + phone + '\'' +
+                ", images=" + images +
                 ", amount=" + amount +
                 ", price=" + price +
                 ", views=" + views +
@@ -226,7 +210,7 @@ public class Item implements Comparable<Item> {
         return amount == item.amount &&
                 Double.compare(item.price, price) == 0 &&
                 views == item.views &&
-                Objects.equals(id, item.id) &&
+                Objects.equals(itemid, item.itemid) &&
                 Objects.equals(name, item.name) &&
                 Objects.equals(address, item.address) &&
                 Objects.equals(subCategory, item.subCategory) &&
@@ -234,12 +218,14 @@ public class Item implements Comparable<Item> {
                 Objects.equals(description, item.description) &&
                 Objects.equals(userid, item.userid) &&
                 Objects.equals(phone, item.phone) &&
+                Objects.equals(images, item.images) &&
+                Objects.equals(viewers, item.viewers) &&
                 Objects.equals(date, item.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, subCategory, mainCategory, description, userid, phone, amount, price, views, date);
+        return Objects.hash(itemid, name, address, subCategory, mainCategory, description, userid, phone, images, amount, price, viewers, views, date);
     }
 
     @Override
