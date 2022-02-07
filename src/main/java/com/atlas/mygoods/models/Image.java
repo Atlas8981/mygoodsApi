@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "Image")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +16,12 @@ public class Image implements Serializable {
     public static final String IMAGE_ID = "image_id";
 
     @Id
-    @GenericGenerator(name = IMAGE_ID,strategy = "increment")
+//    @GenericGenerator(name = IMAGE_ID,strategy = "increment")
+    @SequenceGenerator(
+            name = "image_sequence",
+            sequenceName = "image_sequence",
+            allocationSize = 1
+    )
     @GeneratedValue(strategy = GenerationType.IDENTITY,generator = IMAGE_ID)
     @Column(name = IMAGE_ID)
     private Long imageId;

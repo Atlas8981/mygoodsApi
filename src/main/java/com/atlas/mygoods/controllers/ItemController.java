@@ -1,5 +1,6 @@
 package com.atlas.mygoods.controllers;
 
+import com.atlas.mygoods.models.Category;
 import com.atlas.mygoods.models.Item;
 import com.atlas.mygoods.services.ImageService;
 import com.atlas.mygoods.services.ItemService;
@@ -31,5 +32,12 @@ public class ItemController {
     @GetMapping
     public List<Item> getAllItem() {
         return itemService.getAllItem();
+    }
+
+    @GetMapping(path = "findItemByCategory")
+    public List<Item> findItemByCategory(
+            @RequestParam(required = true) String mainCategory,
+            @RequestParam(required = true) String subCategory) {
+        return itemService.findItemByCategory(new Category(mainCategory, subCategory));
     }
 }

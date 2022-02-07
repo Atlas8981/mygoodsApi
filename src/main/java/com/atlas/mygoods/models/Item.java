@@ -1,13 +1,12 @@
 package com.atlas.mygoods.models;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Entity
+@Entity(name = "Item")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -18,52 +17,57 @@ public class Item implements Serializable, Comparable<Item> {
     public static final String ITEM_ID = "item_id";
 
     @Id
-    @GenericGenerator(name = ITEM_ID,strategy = "increment")
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = ITEM_ID)
-    @Column(name = ITEM_ID)
+//    @GenericGenerator(name = ITEM_ID, strategy = "increment")
+    @SequenceGenerator(
+            name = "item_sequence",
+            sequenceName = "item_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = ITEM_ID
+    )
+    @Column(name = ITEM_ID, updatable = false)
     private Long itemid;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "subCategory")
+    @Column(name = "subCategory", nullable = false)
     private String subCategory;
 
-    @Column(name = "mainCategory")
+    @Column(name = "mainCategory", nullable = false)
     private String mainCategory;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "userid")
+    @Column(name = "userid", nullable = false)
     private String userid;
 
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @OneToMany
     private List<Image> images;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private int amount;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private double price;
 
     @ElementCollection
     private List<String> viewers;
 
-    @Column(name = "views")
+    @Column(name = "views", nullable = false)
     private int views;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private Date date;
-
-    //    Without Item Id,View = 0
-//    Basically for Add Fragement
 
     public Item(String name, String address, List<Image> images, String subCategory, String mainCategory, String description, String userid, String phone, double price, Date date) {
         this.name = name;
@@ -79,24 +83,6 @@ public class Item implements Serializable, Comparable<Item> {
         this.views = 0;
         this.viewers = new ArrayList<>();
     }
-
-//    public Item copyItemEntity(ItemEntity itemEntity){
-
-//        itemEntity.getItemid(),
-//                itemEntity.getName(),
-//                itemEntity.getAddress(),
-//                itemEntity.getSubCategory(),
-//                itemEntity.getMainCategory(),
-//                itemEntity.getDescription(),
-//                itemEntity.getDescription(),
-//                itemEntity.getUserid(),
-//                itemEntity.getPhone(),
-//                itemEntity.getAmount(),
-//                itemEntity.getPrice(),
-//                itemEntity.getViews(),
-//                itemEntity.getDate()
-//        return tempItem;
-//    }
 
     public String getSubCategory() {
         return subCategory;
