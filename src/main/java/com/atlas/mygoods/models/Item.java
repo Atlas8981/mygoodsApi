@@ -1,39 +1,68 @@
 package com.atlas.mygoods.models;
 
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "items")
 public class Item implements Serializable, Comparable<Item> {
+
+    public static final String ITEM_ID = "item_id";
+
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = ITEM_ID,strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = ITEM_ID)
+    @Column(name = ITEM_ID)
     private Long itemid;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "subCategory")
     private String subCategory;
+
+    @Column(name = "mainCategory")
     private String mainCategory;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "userid")
     private String userid;
+
+    @Column(name = "phone")
     private String phone;
-    @OneToMany(targetEntity = Image.class)
+
+    @OneToMany
     private List<Image> images;
+
+    @Column(name = "amount")
     private int amount;
+
+    @Column(name = "price")
     private double price;
-//    @OneToMany(targetEntity = List.class,mappedBy = "item")
+
     @ElementCollection
     private List<String> viewers;
+
+    @Column(name = "views")
     private int views;
+
+    @Column(name = "date")
     private Date date;
 
-    public Item() {
-    }
-
-//    Without Item Id,View = 0
+    //    Without Item Id,View = 0
 //    Basically for Add Fragement
 
     public Item(String name, String address, List<Image> images, String subCategory, String mainCategory, String description, String userid, String phone, double price, Date date) {
@@ -90,7 +119,11 @@ public class Item implements Serializable, Comparable<Item> {
     }
 
     public void setImages(List<Image> images) {
-        this.images = images;
+        if (images == null) {
+            this.images = null;
+        } else {
+            this.images = Collections.unmodifiableList(images);
+        }
     }
 
     public Long getItemid() {

@@ -1,24 +1,35 @@
 package com.atlas.mygoods.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
-@Table
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "images")
 public class Image implements Serializable {
+
+    public static final String IMAGE_ID = "image_id";
+
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = IMAGE_ID,strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = IMAGE_ID)
+    @Column(name = IMAGE_ID)
     private Long imageId;
+
+    @Column(name = "imageUrl")
     private String imageURL;
+
+    @Column(name = "imageName")
     private String imageName;
 
-    public Image() {
-
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "itemid")
+//    private Item item;
 
     public Image(String imageURL) {
         this.imageURL = imageURL;
@@ -26,12 +37,6 @@ public class Image implements Serializable {
     }
 
     public Image(String imageURL, String imageName) {
-        this.imageURL = imageURL;
-        this.imageName = imageName;
-    }
-
-    public Image(Long imageId, String imageURL, String imageName) {
-        this.imageId = imageId;
         this.imageURL = imageURL;
         this.imageName = imageName;
     }
@@ -67,19 +72,5 @@ public class Image implements Serializable {
                 ", imageURL='" + imageURL + '\'' +
                 ", imageName='" + imageName + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Image image = (Image) o;
-        return Objects.equals(imageURL, image.imageURL) &&
-                Objects.equals(imageName, image.imageName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(imageURL, imageName);
     }
 }
