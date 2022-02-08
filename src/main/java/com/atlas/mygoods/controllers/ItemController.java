@@ -24,9 +24,11 @@ public class ItemController {
     }
 
     @PostMapping
-    public void addItem(@RequestBody Item item) {
+    public Item addItem(@RequestBody Item item) {
         imageService.addImages(item.getImages());
         itemService.addItem(item);
+
+        return item;
     }
 
     @GetMapping
@@ -36,8 +38,24 @@ public class ItemController {
 
     @GetMapping(path = "findItemByCategory")
     public List<Item> findItemByCategory(
-            @RequestParam(required = true) String mainCategory,
-            @RequestParam(required = true) String subCategory) {
-        return itemService.findItemByCategory(new Category(mainCategory, subCategory));
+            @RequestParam String mainCategory,
+            @RequestParam String subCategory) {
+        return itemService.findItemByCategory(
+                new Category(
+                        mainCategory,
+                        subCategory
+                )
+        );
     }
+
+    @DeleteMapping(path = "{itemId}")
+    public void deleteItem(@PathVariable("itemId") Long itemId) {
+        itemService.deleteItemById(itemId);
+    }
+
+    @PutMapping(path = "{itemId}")
+    public void updateItem(@PathVariable("itemId") Long id, @RequestBody Item item) {
+        itemService.updateItemByItem(id, item);
+    }
+
 }

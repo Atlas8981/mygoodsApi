@@ -69,6 +69,7 @@ public class Item implements Serializable, Comparable<Item> {
     @Column(name = "date", nullable = false)
     private Date date;
 
+
     public Item(String name, String address, List<Image> images, String subCategory, String mainCategory, String description, String userid, String phone, double price, Date date) {
         this.name = name;
         this.address = address;
@@ -249,7 +250,7 @@ public class Item implements Serializable, Comparable<Item> {
 
     @Override
     public int compareTo(Item o) {
-        int compareView = ((Item) o).getViews();
+        int compareView = o.getViews();
         return compareView - this.views;
     }
 
