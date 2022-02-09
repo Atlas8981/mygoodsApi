@@ -1,0 +1,24 @@
+server:
+  error:
+    include-message: always
+spring:
+  datasource:
+    username: root
+    password: ''
+    url: jdbc:mysql://localhost:3306/mygoods
+  jpa:
+    hibernate:
+      ddl-auto: 'create-drop'
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  port: 8080
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            clientId: github-client-id
+#            clientSecret: github-client-secret

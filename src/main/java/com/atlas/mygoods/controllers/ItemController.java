@@ -58,4 +58,9 @@ public class ItemController {
         itemService.updateItemByItem(id, item);
     }
 
+//    @GetMapping(path = "myItems/{userId}")
+//    public List<Item> getMyItems(@PathVariable("userId")){
+//        itemService
+//    }
+
 }

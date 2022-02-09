@@ -1,13 +1,15 @@
 package com.atlas.mygoods.models;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(name = "Image")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "images")
@@ -22,7 +24,7 @@ public class Image implements Serializable {
             sequenceName = "image_sequence",
             allocationSize = 1
     )
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = IMAGE_ID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = IMAGE_ID)
     @Column(name = IMAGE_ID)
     private Long imageId;
 
@@ -78,4 +80,5 @@ public class Image implements Serializable {
                 ", imageName='" + imageName + '\'' +
                 '}';
     }
+
 }
