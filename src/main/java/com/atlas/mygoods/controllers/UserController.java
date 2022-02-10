@@ -3,7 +3,7 @@ package com.atlas.mygoods.controllers;
 import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.RoleToUserRequest;
 import com.atlas.mygoods.models.User;
-import com.atlas.mygoods.services.UserService;
+import com.atlas.mygoods.services.UserServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -12,10 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,7 +22,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -37,34 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class UserController {
 
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    @Autowired
-//    private MyUserDetailService userDetailService;
-//
-//    @Autowired
-//    private JwtUtil jwtUtil;
-
-//    @PostMapping
-//    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                    authenticationRequest.getUsername(),
-//                    authenticationRequest.getPassword()
-//            ));
-//        } catch (BadCredentialsException e) {
-//            throw new Exception("Incorrect username or password", e);
-//        }
-//
-//        final UserDetails userDetails = userDetailService.loadUserByUsername(authenticationRequest.getUsername());
-//
-//        final String jwt = jwtUtil.generateToken(userDetails);
-//
-//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//    }
-
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping(path = "/users")
     public ResponseEntity<List<User>> getUsers() {

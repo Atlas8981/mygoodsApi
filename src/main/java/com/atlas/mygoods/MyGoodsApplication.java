@@ -4,7 +4,7 @@ import com.atlas.mygoods.models.Image;
 import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.User;
 import com.atlas.mygoods.services.ImageService;
-import com.atlas.mygoods.services.UserService;
+import com.atlas.mygoods.services.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,13 +35,13 @@ public class MyGoodsApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService, ImageService imageService) {
+    CommandLineRunner run(UserServiceImpl userService, ImageService imageService) {
         return args -> {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_MANAGER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
-            imageService.addImage(new Image(1L, "something", "imageURl"));
+//            imageService.addImage(new Image(1L, "something", "imageURl", null));
 
             final User user1 = userService.saveUser(new User(
                     null,
@@ -51,7 +51,7 @@ public class MyGoodsApplication {
                     "atlas599",
                     "016409637",
                     "atlas59@example.com",
-                    new Image(1L, "something", "imageURl"),
+                    new Image(null, "something1", "imageURl", null),
                     "this is my address",
                     new ArrayList<>()
             ));
@@ -63,7 +63,7 @@ public class MyGoodsApplication {
                     "Orton899",
                     "016409637",
                     "atlas59@example.com",
-                    new Image(1L, "something", "imageURl"),
+                    new Image(null, "something", "imageURl", null),
                     "this is my address",
                     new ArrayList<>()
             ));
@@ -71,7 +71,6 @@ public class MyGoodsApplication {
             userService.addRoleToUser(user2.getId(), "ROLE_MANAGER");
         };
     }
-
 
 
 }

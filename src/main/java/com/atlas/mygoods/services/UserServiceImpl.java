@@ -2,6 +2,7 @@ package com.atlas.mygoods.services;
 
 import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.User;
+import com.atlas.mygoods.repositories.ImageRepository;
 import com.atlas.mygoods.repositories.RoleRepository;
 import com.atlas.mygoods.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
+    private final ImageRepository imageRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new IllegalStateException("Username Taken");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        imageRepository.save(user.getImage());
         return userRepo.save(user);
     }
 

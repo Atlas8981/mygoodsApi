@@ -34,9 +34,9 @@ public class Image implements Serializable {
     @Column(name = "imageName")
     private String imageName;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "itemid")
-//    private Item item;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_image_id")
+    private Item item;
 
     public Image(String imageURL) {
         this.imageURL = imageURL;
