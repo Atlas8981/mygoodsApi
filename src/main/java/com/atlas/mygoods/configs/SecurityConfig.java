@@ -2,6 +2,7 @@ package com.atlas.mygoods.configs;
 
 import com.atlas.mygoods.filter.CustomAuthenticationFilter;
 import com.atlas.mygoods.filter.CustomAuthorizationFilter;
+import com.atlas.mygoods.services.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,7 @@ import javax.servlet.ServletException;
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserServiceImpl userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -43,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**").permitAll();
         http.authorizeRequests().antMatchers("/api/token/refresh/**").permitAll();
-
         http.authorizeRequests().anyRequest().authenticated();
+
 
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(

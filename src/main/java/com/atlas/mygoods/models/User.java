@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "User")
 @Getter
@@ -15,13 +16,13 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-public class User implements UserDetails,Serializable {
+public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false,unique = true)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, unique = true)
     private String password;
 
     @Column(name = "firstName", nullable = false)
@@ -33,29 +34,25 @@ public class User implements UserDetails,Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "phoneNumber", nullable = false)
-    private String phoneNumber;
+    @Column(name = "primary_phone", nullable = false, unique = true)
+    private String primaryPhone;
 
-    @Column(name = "email", nullable = false)
+    @ElementCollection
+    @Column(name = "user_phone_id", nullable = false)
+    private List<String> phones;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @OneToOne
-    @JoinColumn(name = "image_image_id")
-    private Image image;
+    @OneToMany
+    @JoinColumn(name = "user_image_id")
+    private List<Image> image;
 
     @Column(name = "address", nullable = false)
     private String address;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
 
     public String getAddress() {
         return address;
@@ -122,27 +119,51 @@ public class User implements UserDetails,Serializable {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public Long getId() {
+        return id;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + id + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", username='" + username + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                ", image=" + image +
-                ", address=" + address +
-                '}';
+    public String getPassword() {
+        return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPrimaryPhone() {
+        return primaryPhone;
+    }
+
+    public void setPrimaryPhone(String primaryPhone) {
+        this.primaryPhone = primaryPhone;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
+    }
+
+    public List<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Image> image) {
+        this.image = image;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 }

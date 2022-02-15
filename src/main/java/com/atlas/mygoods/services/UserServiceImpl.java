@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j //for logging
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepo;
@@ -31,9 +31,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
+    //    Find user in database to check login
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+//        System.out.println("UserServiceImpl loadUserByUsername: " + username);
+        User user = userRepo.findByUsernameOrPrimaryPhoneOrEmail(username, username, username);
         if (user == null) {
             log.error("user not found");
             throw new UsernameNotFoundException("User not found in the database");
@@ -54,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new IllegalStateException("Username Taken");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        imageRepository.save(user.getImage());
+        imageRepository.saveAll(user.getImage());
         return userRepo.save(user);
     }
 

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
 @RestController
@@ -50,8 +53,9 @@ public class MyGoodsApplication {
                     "Atlas",
                     "atlas599",
                     "016409637",
+                    List.of("016409637", "012409637"),
                     "atlas59@example.com",
-                    new Image(null, "something1", "imageURl", null),
+                    List.of(new Image(null, "something1", "imageURl", null, null)),
                     "this is my address",
                     new ArrayList<>()
             ));
@@ -61,9 +65,10 @@ public class MyGoodsApplication {
                     "Michael",
                     "Orton",
                     "Orton899",
-                    "016409637",
-                    "atlas59@example.com",
-                    new Image(null, "something", "imageURl", null),
+                    "077585344",
+                    List.of("077585344", "078585344"),
+                    "michael59@example.com",
+                    List.of(new Image(null, "something", "imageURl", null, null)),
                     "this is my address",
                     new ArrayList<>()
             ));

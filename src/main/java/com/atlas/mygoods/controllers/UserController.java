@@ -4,7 +4,6 @@ import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.RoleToUserRequest;
 import com.atlas.mygoods.models.User;
 import com.atlas.mygoods.services.UserService;
-import com.atlas.mygoods.services.UserServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,10 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -123,7 +120,8 @@ public class UserController {
 
 //    @PostMapping(path = "/logout")
 //    public String logout(HttpServletRequest request, HttpServletResponse response) {
-//        HttpSession session = request.getSession(false);
+//        request.getSession(false);
+//        HttpSession session;
 //        SecurityContextHolder.clearContext();
 //        session = request.getSession(false);
 //        if (session != null) {

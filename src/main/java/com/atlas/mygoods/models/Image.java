@@ -38,6 +38,10 @@ public class Image implements Serializable {
     @JoinColumn(name = "item_image_id")
     private Item item;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_image_id")
+    private User user;
+
     public Image(String imageURL) {
         this.imageURL = imageURL;
         this.imageName = "ImageName";
