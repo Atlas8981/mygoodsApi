@@ -27,7 +27,6 @@ public class ItemController {
     public Item addItem(@RequestBody Item item) {
         imageService.addImages(item.getImages());
         itemService.addItem(item);
-
         return item;
     }
 

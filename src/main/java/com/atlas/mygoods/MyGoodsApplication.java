@@ -4,7 +4,7 @@ import com.atlas.mygoods.models.Image;
 import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.User;
 import com.atlas.mygoods.services.ImageService;
-import com.atlas.mygoods.services.UserServiceImpl;
+import com.atlas.mygoods.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +35,7 @@ public class MyGoodsApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserServiceImpl userService, ImageService imageService) {
+    CommandLineRunner run(UserService userService, ImageService imageService) {
         return args -> {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_MANAGER"));

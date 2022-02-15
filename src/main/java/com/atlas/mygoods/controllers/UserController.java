@@ -3,6 +3,7 @@ package com.atlas.mygoods.controllers;
 import com.atlas.mygoods.models.Role;
 import com.atlas.mygoods.models.RoleToUserRequest;
 import com.atlas.mygoods.models.User;
+import com.atlas.mygoods.services.UserService;
 import com.atlas.mygoods.services.UserServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -12,11 +13,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -32,7 +39,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @GetMapping(path = "/users")
     public ResponseEntity<List<User>> getUsers() {
@@ -72,7 +79,7 @@ public class UserController {
     @GetMapping(path = "/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        
+
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
@@ -113,5 +120,20 @@ public class UserController {
         }
 
     }
+
+//    @PostMapping(path = "/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response) {
+//        HttpSession session = request.getSession(false);
+//        SecurityContextHolder.clearContext();
+//        session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        for (Cookie cookie : request.getCookies()) {
+//            cookie.setMaxAge(0);
+//        }
+//
+//        return "logout";
+//    }
 }
 
