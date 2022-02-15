@@ -1,5 +1,6 @@
 package com.atlas.mygoods.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -36,6 +37,7 @@ public class Image implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_image_id")
+//    @JsonBackReference
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)

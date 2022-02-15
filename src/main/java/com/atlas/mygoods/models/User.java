@@ -44,8 +44,7 @@ public class User implements UserDetails, Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @OneToMany
-    @JoinColumn(name = "user_image_id")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Image> image;
 
     @Column(name = "address", nullable = false)
@@ -165,5 +164,22 @@ public class User implements UserDetails, Serializable {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", primaryPhone='" + primaryPhone + '\'' +
+                ", phones=" + phones +
+                ", email='" + email + '\'' +
+                ", image=" + image +
+                ", address='" + address + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

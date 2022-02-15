@@ -55,7 +55,7 @@ public class MyGoodsApplication {
                     "016409637",
                     List.of("016409637", "012409637"),
                     "atlas59@example.com",
-                    List.of(new Image(null, "something1", "imageURl", null, null)),
+                    List.of(new Image("something1", "imageURl1")),
                     "this is my address",
                     new ArrayList<>()
             ));
@@ -68,7 +68,7 @@ public class MyGoodsApplication {
                     "077585344",
                     List.of("077585344", "078585344"),
                     "michael59@example.com",
-                    List.of(new Image(null, "something", "imageURl", null, null)),
+                    List.of(new Image("something", "imageURl")),
                     "this is my address",
                     new ArrayList<>()
             ));

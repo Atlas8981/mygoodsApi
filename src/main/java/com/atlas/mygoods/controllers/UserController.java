@@ -40,7 +40,8 @@ public class UserController {
 
     @GetMapping(path = "/users")
     public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+        final List<User> users = userService.getUsers();
+        return ResponseEntity.ok().body(users);
     }
 
     @PostMapping(path = "/user/save")

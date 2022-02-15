@@ -3,22 +3,26 @@ server:
     include-message: always
 spring:
   datasource:
-    username: root
     password: ''
     url: jdbc:mysql://localhost:3306/mygoods
+    username: root
   jpa:
     hibernate:
-      ddl-auto: 'create-drop'
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    password: emailPassword
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    username: sannchesda8981@gmail.com
   port: 8080
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            clientId: github-client-id
-#            clientSecret: github-client-secret
