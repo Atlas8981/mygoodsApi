@@ -53,6 +53,25 @@ public class User implements UserDetails, Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
+    public User(Long id, String password, String firstname, String lastname, String username, String primaryPhone, List<String> phones, String email, List<Image> image, String address, Collection<Role> roles) {
+        this.id = id;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.primaryPhone = primaryPhone;
+        this.phones = phones;
+        this.email = email;
+        this.image = image;
+        this.address = address;
+        this.roles = roles;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -103,7 +122,11 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
+    }
+
+    public String getFullName() {
+        return this.firstname + " " + this.lastname;
     }
 
     public void setUsername(String username) {
