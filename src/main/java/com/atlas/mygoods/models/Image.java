@@ -1,12 +1,9 @@
 package com.atlas.mygoods.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity(name = "Image")
 @Getter

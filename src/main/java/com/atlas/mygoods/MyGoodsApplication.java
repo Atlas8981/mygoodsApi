@@ -1,11 +1,5 @@
 package com.atlas.mygoods;
 
-import com.atlas.mygoods.models.Image;
-import com.atlas.mygoods.models.Role;
-import com.atlas.mygoods.models.User;
-import com.atlas.mygoods.services.ImageService;
-import com.atlas.mygoods.services.UserService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,13 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 @SpringBootApplication
 @RestController
 public class MyGoodsApplication {
@@ -30,7 +19,7 @@ public class MyGoodsApplication {
     }
 
     @GetMapping(path = "/")
-    public String greeting() {
+    public @ResponseBody String greeting() {
         return "This is myGood backend";
     }
 

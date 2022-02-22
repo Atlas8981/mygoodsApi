@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        imageRepository.saveAll(user.getImage());
+        imageRepository.saveAll(user.getImages());
         return userRepo.save(user);
     }
 
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setEnabled(false);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        imageRepository.saveAll(user.getImage());
+        imageRepository.saveAll(user.getImages());
         final User savedUser = userRepo.save(user);
 
         sendVerificationEmail(user, siteUrl);

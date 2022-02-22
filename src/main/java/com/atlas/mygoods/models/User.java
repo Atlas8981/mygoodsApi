@@ -45,7 +45,7 @@ public class User implements UserDetails, Serializable {
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Image> image;
+    private List<Image> images;
 
     @Column(name = "address", nullable = false)
     private String address;
@@ -67,7 +67,7 @@ public class User implements UserDetails, Serializable {
         this.primaryPhone = primaryPhone;
         this.phones = phones;
         this.email = email;
-        this.image = image;
+        this.images = image;
         this.address = address;
         this.roles = roles;
     }
@@ -94,6 +94,12 @@ public class User implements UserDetails, Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (images.get(0) == null) return null;
+        return images.get(0).getImageURL();
     }
 
     @Override
@@ -173,12 +179,12 @@ public class User implements UserDetails, Serializable {
         this.phones = phones;
     }
 
-    public List<Image> getImage() {
-        return image;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setImage(List<Image> image) {
-        this.image = image;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     public Collection<Role> getRoles() {
@@ -200,7 +206,7 @@ public class User implements UserDetails, Serializable {
                 ", primaryPhone='" + primaryPhone + '\'' +
                 ", phones=" + phones +
                 ", email='" + email + '\'' +
-                ", image=" + image +
+                ", image=" + images +
                 ", address='" + address + '\'' +
                 ", roles=" + roles +
                 '}';
