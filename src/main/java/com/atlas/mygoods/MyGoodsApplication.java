@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication
 @RestController
 @Configuration
-public class MyGoodsApplication extends WebMvcConfigurationSupport {
+public class MyGoodsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MyGoodsApplication.class, args);
@@ -54,13 +54,6 @@ public class MyGoodsApplication extends WebMvcConfigurationSupport {
         return firewall;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        // Register resource handler for images
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/")
-                .setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
-    }
 
 //    @Bean
 //    CommandLineRunner run(UserService userService, ImageService imageService) {
