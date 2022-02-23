@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -27,20 +28,27 @@ public class ImageController {
 
     @PostMapping("/save")
     public String addImage(@RequestParam("image") MultipartFile multipartFile) throws IOException {
+        if (multipartFile.isEmpty()) {
+            return "failed: image is empty";
+        }
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        String randomCode = RandomString.make(64);
-        String uploadDir = "user-photos/";
-        imageService.addImage(new Image(uploadDir + fileName, fileName));
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        String imageBase64 = Base64.getEncoder().encodeToString(multipartFile.getBytes());
+        imageService.addImage(new Image(imageBase64, fileName));
+//        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         return "done";
     }
 
-    @GetMapping(path = "/get-image", value = "/get-image")
+    @GetMapping(value = "/image", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
     byte[] getImage() throws IOException {
-        InputStream in = getClass().getResourceAsStream("C:\\Users\\M\\Desktop\\mygoods\\user-photos\\3 light.jpg");
+
+        InputStream in = getClass()
+                .getResourceAsStream("/user-photos/picture.jpg");
+        System.out.println("getImage" + in);
+        assert in != null;
         return IOUtils.toByteArray(in);
     }
+
 
     @GetMapping
     public List<Image> getAllImage() {

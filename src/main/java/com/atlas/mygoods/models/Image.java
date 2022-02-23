@@ -26,6 +26,7 @@ public class Image implements Serializable {
     @Column(name = IMAGE_ID)
     private Long imageId;
 
+    @Lob
     @Column(name = "imageUrl")
     private String imageURL;
 

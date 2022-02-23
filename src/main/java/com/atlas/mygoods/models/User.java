@@ -99,7 +99,8 @@ public class User implements UserDetails, Serializable {
     @Transient
     public String getPhotosImagePath() {
         if (images.get(0) == null) return null;
-        return images.get(0).getImageURL();
+        System.out.println("getPhotosImagePath(): " + images.get(0).getImageName());
+        return "/user-photos/" + images.get(0).getImageName();
     }
 
     @Override
