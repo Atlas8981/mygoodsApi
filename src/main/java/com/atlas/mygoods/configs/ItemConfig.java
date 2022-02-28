@@ -1,15 +1,11 @@
 package com.atlas.mygoods.configs;
 
-import com.atlas.mygoods.models.Image;
-import com.atlas.mygoods.models.Item;
+
 import com.atlas.mygoods.repositories.ImageRepository;
 import com.atlas.mygoods.repositories.ItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Date;
-import java.util.List;
 
 @Configuration
 public class ItemConfig {

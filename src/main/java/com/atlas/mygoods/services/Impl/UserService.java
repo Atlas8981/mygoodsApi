@@ -1,7 +1,7 @@
-package com.atlas.mygoods.services;
+package com.atlas.mygoods.services.Impl;
 
-import com.atlas.mygoods.models.Role;
-import com.atlas.mygoods.models.User;
+import com.atlas.mygoods.models.User.Role;
+import com.atlas.mygoods.models.User.User;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;

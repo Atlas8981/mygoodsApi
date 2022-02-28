@@ -1,4 +1,4 @@
-package com.atlas.mygoods.models;
+package com.atlas.mygoods.models.User;
 
 import lombok.Data;
 

@@ -1,16 +1,17 @@
 package com.atlas.mygoods;
 
+
 import com.atlas.mygoods.models.Image;
-import com.atlas.mygoods.models.Role;
-import com.atlas.mygoods.models.User;
+import com.atlas.mygoods.models.User.Role;
+import com.atlas.mygoods.models.User.User;
+import com.atlas.mygoods.services.CategoryService;
 import com.atlas.mygoods.services.ImageService;
-import com.atlas.mygoods.services.UserService;
+import com.atlas.mygoods.services.Impl.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.CacheControl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -18,13 +19,9 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @RestController
@@ -55,9 +52,20 @@ public class MyGoodsApplication {
     }
 
 
-//    @Bean
-//    CommandLineRunner run(UserService userService, ImageService imageService) {
-//        return args -> {
+    @Bean
+    CommandLineRunner run(UserService userService, ImageService imageService, CategoryService categoryService) {
+        return args -> {
+//            final MainCategory mainCategory = new MainCategory("Electronic");
+//            final MainCategory mainCategory1 = new MainCategory("Car & Vehicle");
+//
+//            final SubCategory category = new SubCategory("Phone");
+//            final SubCategory category1 = new SubCategory(mainCategory, "Laptop");
+//            final SubCategory category2 = new SubCategory(mainCategory1, "Cars");
+//
+//            categoryService.addCategory(new Category(mainCategory, category));
+//            categoryService.addCategory(category1);
+//            categoryService.addCategory(category2);
+
 //            userService.saveRole(new Role(null, "ROLE_USER"));
 //            userService.saveRole(new Role(null, "ROLE_MANAGER"));
 //            userService.saveRole(new Role(null, "ROLE_ADMIN"));
@@ -92,8 +100,8 @@ public class MyGoodsApplication {
 //            ));
 //            userService.addRoleToUser(user1.getId(), "ROLE_USER");
 //            userService.addRoleToUser(user2.getId(), "ROLE_MANAGER");
-//        };
-//    }
+        };
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package com.atlas.mygoods.models;
+package com.atlas.mygoods.models.AdditionalInfo;
 
 
 public class Phone {

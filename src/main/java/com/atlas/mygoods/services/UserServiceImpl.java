@@ -1,13 +1,13 @@
 package com.atlas.mygoods.services;
 
-import com.atlas.mygoods.models.Role;
-import com.atlas.mygoods.models.User;
+import com.atlas.mygoods.models.User.Role;
+import com.atlas.mygoods.models.User.User;
 import com.atlas.mygoods.repositories.ImageRepository;
 import com.atlas.mygoods.repositories.RoleRepository;
 import com.atlas.mygoods.repositories.UserRepository;
+import com.atlas.mygoods.services.Impl.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +36,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
     private final ImageRepository imageRepository;
-
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private JavaMailSender mailSender;
 
-    //    Find user in database to check login
+    // Find user in database to check login
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        System.out.println("UserServiceImpl loadUserByUsername: " + username);
@@ -67,18 +69,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepo.save(user);
     }
 
-    @Autowired
-    private JavaMailSender mailSender;
-
     @Override
     public User register(User user, String siteUrl) throws UnsupportedEncodingException, MessagingException {
-        log.info("Saved User");
-        User tempUser = userRepo.findByUsername(user.getUsername());
+
+        final User tempUser = userRepo.findByUsername(user.getUsername());
         if (tempUser != null) {
             throw new IllegalStateException("Username Taken");
         }
 
-        String randomCode = RandomString.make(64);
+        final Random rand = new Random();
+
+        String randomCode = String.valueOf(rand.nextInt(4));
         user.setVerificationCode(randomCode);
         user.setEnabled(false);
 
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         final User savedUser = userRepo.save(user);
 
         sendVerificationEmail(user, siteUrl);
-
+        log.info("Saved User, Sent Email Verification");
         return savedUser;
     }
 

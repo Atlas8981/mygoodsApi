@@ -1,7 +1,7 @@
 package com.atlas.mygoods.services;
 
-import com.atlas.mygoods.models.Category;
-import com.atlas.mygoods.models.Item;
+import com.atlas.mygoods.models.Item.Item;
+import com.atlas.mygoods.repositories.ImageRepository;
 import com.atlas.mygoods.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,12 @@ import java.util.List;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final ImageRepository imageRepository;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, ImageRepository imageRepository) {
         this.itemRepository = itemRepository;
+        this.imageRepository = imageRepository;
     }
 
     public List<Item> getAllItem() {
@@ -26,11 +28,11 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public List<Item> findItemByCategory(Category category) {
-        return itemRepository.findItemByCategory(
-                category.getMainCategory(),
-                category.getSubCategory());
-    }
+//    public List<Item> findItemByCategory(Category category) {
+//        return itemRepository.findItemByCategory(
+//                category.getMainCategory(),
+//                category.getSubCategory());
+//    }
 
     public void deleteItemById(Long id) {
         boolean exist = itemRepository.existsById(id);
@@ -42,7 +44,7 @@ public class ItemService {
 
     @Transactional
     public void updateItemByItem(Long id, Item newItem) {
-        Item item = itemRepository.findById(id)
+        final Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException(
                         "Item with id " + newItem.getItemid() + " does not exist")
                 );

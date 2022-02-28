@@ -1,5 +1,7 @@
 package com.atlas.mygoods.models;
 
+import com.atlas.mygoods.models.Item.Item;
+import com.atlas.mygoods.models.User.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,12 +18,6 @@ public class Image implements Serializable {
     public static final String IMAGE_ID = "image_id";
 
     @Id
-//    @GenericGenerator(name = IMAGE_ID,strategy = "increment")
-    @SequenceGenerator(
-            name = "image_sequence",
-            sequenceName = "image_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = IMAGE_ID)
     @Column(name = IMAGE_ID)
     private Long imageId;

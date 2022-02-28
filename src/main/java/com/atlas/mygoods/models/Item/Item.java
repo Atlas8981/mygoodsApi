@@ -1,5 +1,6 @@
-package com.atlas.mygoods.models;
+package com.atlas.mygoods.models.Item;
 
+import com.atlas.mygoods.models.Image;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,11 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "items")
-public class Item implements Serializable, Comparable<Item> {
+public class Item implements Serializable {
 
     public static final String ITEM_ID = "item_id";
 
     @Id
-//    @GenericGenerator(name = ITEM_ID, strategy = "increment")
     @SequenceGenerator(
             name = "item_sequence",
             sequenceName = "item_sequence",
@@ -41,6 +41,7 @@ public class Item implements Serializable, Comparable<Item> {
 
     @Column(name = "mainCategory", nullable = false)
     private String mainCategory;
+
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -74,15 +75,14 @@ public class Item implements Serializable, Comparable<Item> {
         this.name = name;
         this.address = address;
         this.images = images;
-        this.subCategory = subCategory;
-        this.mainCategory = mainCategory;
         this.description = description;
         this.userid = userid;
         this.price = price;
         this.phone = phone;
-        this.date = date;
         this.views = 0;
         this.viewers = new ArrayList<>();
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
     }
 
     public String getSubCategory() {
@@ -201,11 +201,10 @@ public class Item implements Serializable, Comparable<Item> {
         this.date = date;
     }
 
-
     @Override
     public String toString() {
         return "Item{" +
-                "itemid='" + itemid + '\'' +
+                "itemid=" + itemid +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", subCategory='" + subCategory + '\'' +
@@ -216,45 +215,11 @@ public class Item implements Serializable, Comparable<Item> {
                 ", images=" + images +
                 ", amount=" + amount +
                 ", price=" + price +
+                ", viewers=" + viewers +
                 ", views=" + views +
                 ", date=" + date +
                 '}';
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
-        return amount == item.amount &&
-                Double.compare(item.price, price) == 0 &&
-                views == item.views &&
-                Objects.equals(itemid, item.itemid) &&
-                Objects.equals(name, item.name) &&
-                Objects.equals(address, item.address) &&
-                Objects.equals(subCategory, item.subCategory) &&
-                Objects.equals(mainCategory, item.mainCategory) &&
-                Objects.equals(description, item.description) &&
-                Objects.equals(userid, item.userid) &&
-                Objects.equals(phone, item.phone) &&
-                Objects.equals(images, item.images) &&
-                Objects.equals(viewers, item.viewers) &&
-                Objects.equals(date, item.date);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(itemid, name, address, subCategory, mainCategory, description, userid, phone, images, amount, price, viewers, views, date);
-    }
-
-    @Override
-    public int compareTo(Item o) {
-        int compareView = o.getViews();
-        return compareView - this.views;
-    }
-
-
 }
 
 

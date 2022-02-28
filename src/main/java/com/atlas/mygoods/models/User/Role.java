@@ -1,4 +1,4 @@
-package com.atlas.mygoods.models;
+package com.atlas.mygoods.models.User;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +15,7 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "role_name", unique = true, nullable = false)
     private String name;
 

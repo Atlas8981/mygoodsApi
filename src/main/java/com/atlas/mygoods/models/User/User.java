@@ -1,5 +1,6 @@
-package com.atlas.mygoods.models;
+package com.atlas.mygoods.models.User;
 
+import com.atlas.mygoods.models.Image;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
