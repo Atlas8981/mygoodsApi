@@ -1,42 +1,33 @@
 package com.atlas.mygoods.services;
 
 
-import com.atlas.mygoods.models.Item.Category.MainCategory;
-import com.atlas.mygoods.repositories.MainCategoryRepository;
+import com.atlas.mygoods.models.Item.Category.Category;
+import com.atlas.mygoods.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService {
-    private final MainCategoryRepository mainCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(
-            MainCategoryRepository mainCategoryRepository) {
-        this.mainCategoryRepository = mainCategoryRepository;
+            CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
-    public void addMainCategory(String mainCat) {
-        final MainCategory mainCategory = new MainCategory(mainCat);
-        mainCategoryRepository.save(mainCategory);
+    public Category addCategory(String mainCat, String subCat) {
+        final Category category = new Category(mainCat, subCat);
+        return categoryRepository.save(category);
     }
 
-    @Transactional
-    public void addSubCategory(Long id, String subCat) {
-        final Optional<MainCategory> tempMainCat = mainCategoryRepository.findById(id);
-        if (tempMainCat.isPresent()) {
-            final MainCategory mainCat = tempMainCat.get();
-            final List<String> tempListOfSubCat = mainCat.getSubCategories();
-            tempListOfSubCat.add(subCat);
-            mainCat.setSubCategories(tempListOfSubCat);
-        }
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
-    public void addSubCategories(List<String> subCats) {
-
+    public int getCount() {
+        return categoryRepository.something();
     }
 }

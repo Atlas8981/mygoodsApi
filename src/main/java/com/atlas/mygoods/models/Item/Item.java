@@ -1,6 +1,7 @@
 package com.atlas.mygoods.models.Item;
 
 import com.atlas.mygoods.models.Image;
+import com.atlas.mygoods.models.Item.Category.Category;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,15 +19,7 @@ public class Item implements Serializable {
     public static final String ITEM_ID = "item_id";
 
     @Id
-    @SequenceGenerator(
-            name = "item_sequence",
-            sequenceName = "item_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = ITEM_ID
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = ITEM_ID, updatable = false)
     private Long itemid;
 
@@ -36,12 +29,16 @@ public class Item implements Serializable {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "subCategory", nullable = false)
-    private String subCategory;
+//    @Column(name = "subCategory", nullable = false)
+//    private String subCategory;
+//
+//    @Column(name = "mainCategory", nullable = false)
+//    private String mainCategory;
 
-    @Column(name = "mainCategory", nullable = false)
-    private String mainCategory;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -53,25 +50,25 @@ public class Item implements Serializable {
     private String phone;
 
     @OneToMany
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 
     @Column(name = "amount", nullable = false)
-    private int amount;
+    private int amount = 0;
 
     @Column(name = "price", nullable = false)
-    private double price;
+    private double price = 0;
 
     @ElementCollection
-    private List<String> viewers;
+    private List<String> viewers = new ArrayList<>();
 
     @Column(name = "views", nullable = false)
-    private int views;
+    private int views = 0;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private Date date = new Date();
 
 
-    public Item(String name, String address, List<Image> images, String subCategory, String mainCategory, String description, String userid, String phone, double price, Date date) {
+    public Item(String name, String address, List<Image> images, Category category, String description, String userid, String phone, double price, Date date) {
         this.name = name;
         this.address = address;
         this.images = images;
@@ -81,24 +78,9 @@ public class Item implements Serializable {
         this.phone = phone;
         this.views = 0;
         this.viewers = new ArrayList<>();
-        this.mainCategory = mainCategory;
-        this.subCategory = subCategory;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    public String getMainCategory() {
-        return mainCategory;
-    }
-
-    public void setMainCategory(String mainCategory) {
-        this.mainCategory = mainCategory;
+        this.category = category;
+//        this.mainCategory = mainCategory;
+//        this.subCategory = subCategory;
     }
 
     public List<Image> getImages() {
@@ -207,8 +189,7 @@ public class Item implements Serializable {
                 "itemid=" + itemid +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", subCategory='" + subCategory + '\'' +
-                ", mainCategory='" + mainCategory + '\'' +
+                ", category=" + category +
                 ", description='" + description + '\'' +
                 ", userid='" + userid + '\'' +
                 ", phone='" + phone + '\'' +

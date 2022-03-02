@@ -1,7 +1,6 @@
 package com.atlas.mygoods.controllers;
 
-import com.atlas.mygoods.models.Item.Category.CategoryRequest;
-import com.atlas.mygoods.models.Item.Category.MainCategory;
+import com.atlas.mygoods.models.Item.Category.Category;
 import com.atlas.mygoods.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +18,19 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping(path = "/mainCat")
-    public void saveMainCategory(@RequestParam("mainCat") String mainCat) {
-        categoryService.addMainCategory(mainCat);
+    @PostMapping()
+    public Category saveCategory(@RequestParam("mainCat") String mainCat, @RequestParam("subCat") String subCat) {
+        return categoryService.addCategory(mainCat, subCat);
     }
 
-    @PostMapping(path = "/subCat")
-    public void addMainCategory(@RequestParam("id") String id, @RequestParam("subCat") String subCat) {
-        categoryService.addSubCategory(Long.parseLong(id), subCat);
-
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
     }
 
-    @GetMapping(path = "/all")
-    public List<MainCategory> getAllCategories() {
-        return null;
+    @GetMapping(path = "/count")
+    public int getCount() {
+        System.out.println("categoryService.getCount()" + categoryService.getCount());
+        return categoryService.getCount();
     }
-
 }
