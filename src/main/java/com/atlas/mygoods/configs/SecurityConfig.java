@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+
     }
 
     @Override
@@ -49,8 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/token/refresh/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
-
-
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(
                 new CustomAuthorizationFilter(),
@@ -64,4 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }

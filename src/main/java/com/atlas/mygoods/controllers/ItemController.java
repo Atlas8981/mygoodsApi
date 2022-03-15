@@ -2,8 +2,10 @@ package com.atlas.mygoods.controllers;
 
 
 import com.atlas.mygoods.models.Item.Item;
+import com.atlas.mygoods.models.Item.ItemDto;
 import com.atlas.mygoods.services.ImageService;
 import com.atlas.mygoods.services.ItemService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,15 +26,25 @@ public class ItemController {
         this.imageService = imageService;
     }
 
+    //    For testing adding item without image
     @PostMapping(path = "test")
     public Item addItem(@RequestBody Item item) {
         return itemService.addItem(item);
     }
 
     @PostMapping
-    public Item addItem(@RequestPart("item") Item item, @RequestPart("images") List<MultipartFile> multipartFiles) throws IOException {
-        itemService.addItem(item, multipartFiles);
-        return item;
+    public String addItem(@RequestPart("item") String item, @RequestPart("images") List<MultipartFile> multipartFiles) throws IOException {
+        ItemDto request = new ItemDto();
+        ObjectMapper objMapper = new ObjectMapper();
+        request = objMapper.readValue(item, ItemDto.class);
+
+        final Item response =  itemService.addItem(request, multipartFiles);
+        if(response == null){
+            return "null";
+        }else{
+            return response.toString();
+        }
+//        return item;
     }
 
     @GetMapping

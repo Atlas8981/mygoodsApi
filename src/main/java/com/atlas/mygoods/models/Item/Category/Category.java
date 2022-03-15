@@ -2,8 +2,6 @@ package com.atlas.mygoods.models.Item.Category;
 
 import com.atlas.mygoods.models.Item.Item;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +27,12 @@ public class Category {
 
     @Column(name = "sub_category", nullable = false, unique = true)
     private String subCategory;
+
+    @Column(name = "count")
+    private String count;
+
+    @Column(name = "counts")
+    private int counts = 0;
 
     @OneToMany
     @JsonBackReference

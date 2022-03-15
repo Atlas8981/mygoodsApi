@@ -3,6 +3,7 @@ package com.atlas.mygoods.services;
 import com.atlas.mygoods.models.Image;
 import com.atlas.mygoods.models.Item.Category.Category;
 import com.atlas.mygoods.models.Item.Item;
+import com.atlas.mygoods.models.Item.ItemDto;
 import com.atlas.mygoods.repositories.CategoryRepository;
 import com.atlas.mygoods.repositories.ImageRepository;
 import com.atlas.mygoods.repositories.ItemRepository;
@@ -40,50 +41,77 @@ public class ItemService {
 
     @Transactional
     public Item addItem(Item item) {
-        item.setDate(new Date());
 
-        Optional<Category> category = categoryRepository.findById(item.getCategory().getId());
-
-        System.out.println("Category: " + category.toString());
+        final Optional<Category> category = categoryRepository.findById(item.getCategory().getId());
 
         if (category.isPresent()) {
+            item.setDate(new Date());
             final Category updatedCategory = category.get();
 
 //            Set Category to newly add item
             item.setCategory(updatedCategory);
 
 //            Update current category with a new item to the list
-            final List<Item> updateItems = category.get().getItems();
-            updateItems.add(item);
-            updatedCategory.setItems(updateItems);
+//            final List<Item> updateItems = category.get().getItems();
+//            updateItems.add(item);
+//            updatedCategory.setItems(updateItems);
 
             return itemRepository.save(item);
-
         }
         return null;
     }
 
-    public void addItem(Item item, List<MultipartFile> files) throws IOException {
+    @Transactional
+    public Item addItem(ItemDto itemDto, List<MultipartFile> files) throws IOException {
+        final Item item = new Item();
+        final Optional<Category> category = categoryRepository.findById(itemDto.getCategoryId());
+
+        if (category.isEmpty()) {
+            return null;
+        }
+
+//        Find Category
+        final Category updatedCategory = category.get();
+//        Update number of category
+        final int preCount = updatedCategory.getCounts();
+        System.out.println(preCount);
+        updatedCategory.setCounts(preCount + 1);
+
+
         final List<Image> images = new ArrayList<>();
         if (files == null || files.size() == 0) {
-            return;
+            return null;
         }
+
         for (MultipartFile file : files) {
             if (file == null) {
-                return;
+                return null;
             }
             if (file.getOriginalFilename() == null) {
-                return;
+                return null;
             }
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String imageBase64 = Base64.getEncoder().encodeToString(file.getBytes());
+            // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            final String fileName = UUID.randomUUID().toString();
+            final String imageBase64 = Base64.getEncoder().encodeToString(file.getBytes());
             final Image image = new Image(imageBase64, fileName);
             images.add(image);
         }
-        imageRepository.saveAll(images);
+
+        item.setDate(itemDto.getDate());
+        item.setCategory(updatedCategory);
+        item.setAddress(itemDto.getAddress());
+        item.setDescription(itemDto.getDescription());
+        item.setUserid(itemDto.getUserid());
+        item.setPrice(itemDto.getPrice());
+        item.setPhone(itemDto.getPhone());
+        item.setName(itemDto.getName());
+        item.setAmount(itemDto.getAmount());
+
         item.setDate(new Date());
         item.setImages(images);
+        imageRepository.saveAll(images);
         itemRepository.save(item);
+        return item;
     }
 
     public List<Item> getItemByCategoryWithPaginationAndSort(
