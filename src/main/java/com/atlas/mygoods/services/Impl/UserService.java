@@ -20,5 +20,5 @@ public interface UserService {
 
     List<User> getUsers();
 
-    boolean verify(String verificationCode);
+    boolean verify(String username, String verificationCode);
 }

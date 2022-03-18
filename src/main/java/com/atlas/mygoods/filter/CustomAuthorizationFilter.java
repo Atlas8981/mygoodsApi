@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Arrays.compareUnsigned;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -34,7 +35,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
+
+        if (request.getServletPath().equals("/api/login")
+                || request.getServletPath().equals("/api/token/refresh")
+                || request.getServletPath().equals("/api/verify")
+                || request.getServletPath().equals("/api/register")) {
             filterChain.doFilter(request, response);
         } else {
             final String authorizationHeader = request.getHeader(AUTHORIZATION);

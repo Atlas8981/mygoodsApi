@@ -38,6 +38,7 @@ public class UserController {
 
     private final UserService userService;
 
+    //    Admin function
     @GetMapping(path = "/users")
     public ResponseEntity<List<User>> getUsers() {
         final List<User> users = userService.getUsers();
@@ -49,7 +50,7 @@ public class UserController {
             @RequestBody User user,
             HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
-        URI uri = URI.create(
+        final URI uri = URI.create(
                 ServletUriComponentsBuilder
                         .fromCurrentContextPath()
                         .path("/api/user/save")
@@ -58,11 +59,11 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/process_register")
-    public String processRegister(@RequestBody User user, HttpServletRequest request)
+    @PostMapping("/register")
+    public User processRegister(@RequestBody User user, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
-        userService.register(user, getSiteURL(request));
-        return "register_success";
+        return userService.register(user, getSiteURL(request));
+
     }
 
     private String getSiteURL(HttpServletRequest request) {
@@ -70,9 +71,9 @@ public class UserController {
         return siteURL.replace(request.getServletPath(), "");
     }
 
-    @GetMapping("/verify")
-    public String verifyUser(@Param("code") String code) {
-        if (userService.verify(code)) {
+    @PostMapping("/verify")
+    public String verifyOtp(@Param("username") String username, @Param("code") String code) {
+        if (userService.verify(username, code)) {
             return "verify_success";
         } else {
             return "verify_fail";

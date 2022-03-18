@@ -43,6 +43,10 @@ public class Category {
         this.subCategory = subCategory;
     }
 
+    public List<Item> getItems() {
+        return this.items;
+    }
+
     @Override
     public String toString() {
         return "Category{" +

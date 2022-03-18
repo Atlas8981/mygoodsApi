@@ -79,12 +79,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         final Random rand = new Random();
 
-        String randomCode = String.valueOf(rand.nextInt(4));
+        final String randomCode = String.format("%04d", rand.nextInt(10000));
         user.setVerificationCode(randomCode);
         user.setEnabled(false);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        imageRepository.saveAll(user.getImages());
+        if (user.getImages() != null) {
+            imageRepository.saveAll(user.getImages());
+        }
         final User savedUser = userRepo.save(user);
 
         sendVerificationEmail(user, siteUrl);
@@ -94,17 +96,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private void sendVerificationEmail(User user, String siteUrl) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
+//        TODO:change to company email
         String fromAddress = "adampeterson8981@gmail.com";
         String senderName = "MyGood";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3><br>"
-                + "Code: [[code]]<br>"
+//                + "Please click the link below to verify your registration:<br>"
+//                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3><br>"
+                + "<h3>Code: [[code]]</h3><br>"
                 + "Thank you,<br>"
                 + "MyGood.";
 
-        MimeMessage message = mailSender.createMimeMessage();
+        final MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         helper.setFrom(fromAddress, senderName);
@@ -147,17 +150,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepo.findAll();
     }
 
+    @Transactional
     @Override
-    public boolean verify(String verificationCode) {
-        User user = userRepo.findByVerificationCode(verificationCode);
+    public boolean verify(String username, String verificationCode) {
+        final User user = userRepo.findByUsername(username);
 
         if (user == null || user.isEnabled()) {
             return false;
         } else {
+            if (!user.getVerificationCode().equals(verificationCode)) {
+                return false;
+            }
             user.setVerificationCode(null);
             user.setEnabled(true);
-            userRepo.save(user);
-
+//            userRepo.save(user);
             return true;
         }
 

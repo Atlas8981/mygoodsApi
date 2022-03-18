@@ -1,6 +1,7 @@
 package com.atlas.mygoods.models.User;
 
 import com.atlas.mygoods.models.Image;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ public class User implements UserDetails, Serializable {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false, unique = true)
     private String password;
 
@@ -35,20 +37,20 @@ public class User implements UserDetails, Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "primary_phone", nullable = false, unique = true)
+    @Column(name = "primary_phone")
     private String primaryPhone;
 
     @ElementCollection
-    @Column(name = "user_phone_id", nullable = false)
+    @Column(name = "user_phone_id")
     private List<String> phones;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email")
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Image> images;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -95,13 +97,6 @@ public class User implements UserDetails, Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    @Transient
-    public String getPhotosImagePath() {
-        if (images.get(0) == null) return null;
-        System.out.println("getPhotosImagePath(): " + images.get(0).getImageName());
-        return "/user-photos/" + images.get(0).getImageName();
     }
 
     @Override
