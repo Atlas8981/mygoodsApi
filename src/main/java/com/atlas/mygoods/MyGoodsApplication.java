@@ -1,6 +1,8 @@
 package com.atlas.mygoods;
 
 
+import com.atlas.mygoods.firebase.Patient;
+import com.atlas.mygoods.firebase.PatientService;
 import com.atlas.mygoods.models.Image;
 import com.atlas.mygoods.models.Item.Category.Category;
 import com.atlas.mygoods.models.Item.Item;
@@ -10,10 +12,14 @@ import com.atlas.mygoods.services.CategoryService;
 import com.atlas.mygoods.services.ImageService;
 import com.atlas.mygoods.services.Impl.UserService;
 import com.atlas.mygoods.services.ItemService;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +35,10 @@ import java.util.List;
 @SpringBootApplication
 @RestController
 @Configuration
+//@ComponentScan(basePackages = {
+//        "com.google.firebase.messaging.FirebaseMessaging",
+//        "com.atlas.mygoods.services.Impl.UserService"
+//}) //to scan
 public class MyGoodsApplication {
 
     public static void main(String[] args) {
@@ -56,10 +66,28 @@ public class MyGoodsApplication {
 
 
     @Bean
-    CommandLineRunner run(UserService userService, ImageService imageService, CategoryService categoryService, ItemService itemService) {
+    CommandLineRunner run(UserService userService,
+                          ImageService imageService,
+                          CategoryService categoryService,
+                          ItemService itemService,
+                          PatientService patientService) {
         return args -> {
+//            patientService.savePatientDetails(new Patient(
+//                    "Somethign",
+//                    1,
+//                    "City"
+//            ));
 
+//            FileInputStream serviceAccount =
+//                    new FileInputStream("C:\\Users\\M\\Desktop\\mygoods\\files\\google-admin.json");
 //
+//            FirebaseOptions options = new FirebaseOptions.Builder()
+//                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+//                    .build();
+//
+//            FirebaseApp.initializeApp(options);
+
+
 //            categoryService.addCategory("Electronic", "Phone");
 //            categoryService.addCategory("Electronic", "Laptop");
 //            categoryService.addCategory("Cars and Vehicle", "Car");
@@ -67,7 +95,8 @@ public class MyGoodsApplication {
         };
     }
 
-    void saveUser(UserService userService){
+
+    void saveUser(UserService userService) {
         userService.saveRole(new Role(null, "ROLE_USER"));
         userService.saveRole(new Role(null, "ROLE_MANAGER"));
         userService.saveRole(new Role(null, "ROLE_ADMIN"));
