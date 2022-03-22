@@ -6,6 +6,7 @@ import com.atlas.mygoods.models.Item.ItemDto;
 import com.atlas.mygoods.services.ImageService;
 import com.atlas.mygoods.services.ItemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,22 +27,35 @@ public class ItemController {
         this.imageService = imageService;
     }
 
+    @PostMapping(path = "testLogin")
+    public void signInPasswordLess() {
+//        authenticator.aut
+    }
+
     //    For testing adding item without image
     @PostMapping(path = "test")
-    public Item addItem(@RequestBody Item item) {
+    public Item addItem(@RequestBody ItemDto itemDto) {
+        final Item item = covertToEntity(itemDto);
         return itemService.addItem(item);
+    }
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    private Item covertToEntity(ItemDto itemDto) {
+        return modelMapper.map(itemDto, Item.class);
     }
 
     @PostMapping
     public String addItem(@RequestPart("item") String item, @RequestPart("images") List<MultipartFile> multipartFiles) throws IOException {
-        ItemDto request = new ItemDto();
-        ObjectMapper objMapper = new ObjectMapper();
-        request = objMapper.readValue(item, ItemDto.class);
 
-        final Item response =  itemService.addItem(request, multipartFiles);
-        if(response == null){
+        final ObjectMapper objMapper = new ObjectMapper();
+        final ItemDto request = objMapper.readValue(item, ItemDto.class);
+
+        final Item response = itemService.addItem(request, multipartFiles);
+        if (response == null) {
             return "null";
-        }else{
+        } else {
             return response.toString();
         }
 //        return item;

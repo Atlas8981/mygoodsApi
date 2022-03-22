@@ -8,6 +8,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -35,6 +38,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         final String username = request.getParameter("username");
         final String password = request.getParameter("password");
+
         final UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
@@ -68,7 +72,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
-
 
 
 }

@@ -1,3 +1,6 @@
+mygoods:
+  email:
+    from: sannchesda8981@gmail.com
 server:
   error:
     include-message: always

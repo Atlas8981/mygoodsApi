@@ -8,6 +8,9 @@ import com.atlas.mygoods.models.Item.Category.Category;
 import com.atlas.mygoods.models.Item.Item;
 import com.atlas.mygoods.models.User.Role;
 import com.atlas.mygoods.models.User.User;
+import com.atlas.mygoods.passwordless.EmailSender;
+import com.atlas.mygoods.passwordless.InMemoryTokenStore;
+import com.atlas.mygoods.passwordless.SpringSecurityAuthenticator;
 import com.atlas.mygoods.services.CategoryService;
 import com.atlas.mygoods.services.ImageService;
 import com.atlas.mygoods.services.Impl.UserService;
@@ -15,12 +18,14 @@ import com.atlas.mygoods.services.ItemService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -51,6 +56,12 @@ public class MyGoodsApplication {
         return "This is myGood backend";
     }
 
+    @GetMapping(path = "/accessDenied")
+    public String accessDenied() {
+        return "Access Denied";
+    }
+
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,6 +73,26 @@ public class MyGoodsApplication {
         firewall.setAllowUrlEncodedSlash(true);
         firewall.setAllowUrlEncodedDoubleSlash(true);
         return firewall;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+    @Bean
+    InMemoryTokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
+
+    @Bean
+    EmailSender sender(JavaMailSender aJavaMailSender) {
+        return new EmailSender(aJavaMailSender);
+    }
+
+    @Bean
+    SpringSecurityAuthenticator authenticator() {
+        return new SpringSecurityAuthenticator(tokenStore());
     }
 
 

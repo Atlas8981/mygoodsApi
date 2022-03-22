@@ -114,7 +114,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-
         content = content.replace("[[name]]", user.getFullName());
         String verifyURL = siteUrl + "/api/verify?code=" + user.getVerificationCode();
 
