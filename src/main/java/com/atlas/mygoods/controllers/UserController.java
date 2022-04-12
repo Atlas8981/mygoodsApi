@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -144,20 +145,11 @@ public class UserController {
 
     }
 
-//    @PostMapping(path = "/logout")
-//    public String logout(HttpServletRequest request, HttpServletResponse response) {
-//        request.getSession(false);
-//        HttpSession session;
-//        SecurityContextHolder.clearContext();
-//        session = request.getSession(false);
-//        if (session != null) {
-//            session.invalidate();
-//        }
-//        for (Cookie cookie : request.getCookies()) {
-//            cookie.setMaxAge(0);
-//        }
-//
-//        return "logout";
-//    }
+    @GetMapping(path = "/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        System.out.println("logout");
+        request.logout();
+        return "logout";
+    }
 }
 

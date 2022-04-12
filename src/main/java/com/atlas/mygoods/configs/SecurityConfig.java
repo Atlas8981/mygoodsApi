@@ -6,6 +6,7 @@ import com.atlas.mygoods.services.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -62,10 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/verify/**").permitAll();
         http.authorizeRequests().antMatchers("/api/register/**").permitAll();
         http.authorizeRequests().antMatchers("/passwordless/**").permitAll();
-//        http.authorizeRequests().antMatchers(HttpMethod.POST, "/passwordless/**").permitAll();
 
-        http.authorizeRequests().anyRequest().authenticated()
-                .and().logout();
+        http.authorizeRequests().anyRequest().authenticated();
+
+        http.logout(logout -> logout
+                .logoutUrl("/api/logout")
+                .clearAuthentication(true)
+        );
 
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(
